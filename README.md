@@ -21,3 +21,15 @@ To obtain the data for the selected location, the following public API requests 
 
 + [5 Day/3 Hour](https://openweathermap.org/forecast5)
 ...This request will retrieve the 3 hour data for the desired location
+
+### Adding Your API Key
+
+First, ensure that any changes that you track your API key. This can be accomplished by running the following: `git update-index --skip-worktree "Weather WebAPI\Weather WebAPI\Web.config"`
+
+Add your API key to the Web.config file within the Weather WebAPI ASP.NET project.
+
+`<appSettings>
+<add key="key" value="YOUR_API_KEY_HERE" />
+</appSettings>`
+
+
