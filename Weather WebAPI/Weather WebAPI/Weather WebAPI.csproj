@@ -90,7 +90,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,11 +103,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenWeatherMapAPI\OpenWeatherMapAPI.csproj">
       <Project>{e782574d-85fe-499c-ab75-18dd00b4386c}</Project>
       <Name>OpenWeatherMapAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Weather Models\Weather Models.csproj">
+      <Project>{9d2f80f4-6946-403e-8ebd-a403f10768dd}</Project>
+      <Name>Weather Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenWeatherMapAPI.Models
+namespace Weather_Models
 {
     public class Current_Weather
     {
         public Coordinates coord { get; set; }
-        public Weather weather { get; set; }
+        public Weather[] weather { get; set; }
 
         // base is a restricted word in c#
         // have to override this property name and create our own

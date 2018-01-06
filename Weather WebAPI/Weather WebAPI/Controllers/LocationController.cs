@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Weather_WebAPI.Models;
+using Weather_Models;
 
 namespace Weather_WebAPI.Controllers
 {
@@ -107,10 +104,10 @@ namespace Weather_WebAPI.Controllers
                 return NotFound();
 
             // we have a location, we can retrieve its weather
-            string json = await OpenWeatherMapAPI.Requests.Weather.CurrentAndForecast(id);
+            Current_and_Forecasted_Weather weather = await OpenWeatherMapAPI.Requests.Weather.CurrentAndForecast(id);
 
             // return ok
-            return Ok(json);
+            return Ok(weather);
         }
     }
 }

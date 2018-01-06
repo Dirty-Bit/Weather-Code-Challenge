@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenWeatherMapAPI.Models
+namespace Weather_Models
 {
-    public class Three_Hour_Weather
+    public class Forecast
     {
         public string cod { get; set; }
         public double message { get; set; }

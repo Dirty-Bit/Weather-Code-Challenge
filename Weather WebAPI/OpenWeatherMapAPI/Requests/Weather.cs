@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using Weather_Models;
 
 namespace OpenWeatherMapAPI.Requests
 {
@@ -88,7 +89,7 @@ namespace OpenWeatherMapAPI.Requests
         /// </summary>
         /// <param name="id">the ID of the location to get the weather from</param>
         /// <returns>{ current: {current}, forecast: {forecast} }</returns>
-        public static async Task<string> CurrentAndForecast(int id)
+        public static async Task<Current_and_Forecasted_Weather> CurrentAndForecast(int id)
         {
             // start the tasks of retrieving the information
             // from either the cache or the API
@@ -98,15 +99,8 @@ namespace OpenWeatherMapAPI.Requests
             // wait until both tasks are completed
             await Task.WhenAll(currentWeatherTask, forecastedWeatherTask);
 
-            // we have both, create the response JSON
-            StringBuilder sb = new StringBuilder();
-            sb.Append("{\"current\":");
-            sb.Append(currentWeatherTask.Result);
-            sb.Append(",\"forecast\":");
-            sb.Append(forecastedWeatherTask.Result);
-            sb.Append("}");
-
-            return sb.ToString();
+            // create the object and return it
+            return new Current_and_Forecasted_Weather(currentWeatherTask.Result, forecastedWeatherTask.Result);
         }
     }
 }
