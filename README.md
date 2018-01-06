@@ -32,4 +32,26 @@ Add your API key to the Web.config file within the Weather WebAPI ASP.NET projec
 <add key="key" value="YOUR_API_KEY_HERE" />
 </appSettings>`
 
+The same is true for the App.config within the OpenWeatherMapAPI.Tests project.
 
+Remove tracking chainges: `git update-index --skip-worktree "Weather WebAPI\OpenWeatherMapAPI.Tests\Web.config"`
+
+Add your API key:
+
+`<appSettings>
+<add key="key" value="YOUR_API_KEY_HERE" />
+</appSettings>`
+
+## ASP.NET API
+
++ Get All Locations (`GET` `/api/locations`)
+...Returns all known locations
+
++ Get Single Location (`GET` `/api/locations/{id}`)
+...Returns a single location, specified by ID number
+
++ Delete Location (`DELETE` `/api/locations/{id}`)
+...Delete the specified location
+
++ Create Location (`POST` `/api/locations` `mime-type: x-www-form-urlencoded`)
+...Add a location to the database
