@@ -2,6 +2,38 @@
 ---
 This project will use ASP.NET 2.0 to provide current weather data and 3 hour weather data for a desired location
 
+## ASP.NET API
+
++ Get All Locations (`GET` `/api/locations`)
+
+.Returns all known locations
+
++ Get Single Location (`GET` `/api/locations/{id}`)
+
+.Returns a single location, specified by ID number
+
++ Delete Location (`DELETE` `/api/locations/{id}`)
+
+.Delete the specified location
+
++ Create Location (`POST` `/api/locations` `mime-type: x-www-form-urlencoded`)
+
+.Add a location to the database
+
+## Database
+
+The location data is stored within a Local SQL Database (.mdf). 
+
+Table definition:
+
+### Locations
+| Column Name   | Data Type     | Allow Null  | PK   |  Identity  |
+| ------------- |:-------------:| ----------- | ---- | ---------- |
+| Id            | int           |  no         | yes  |  no        |
+| Name          | nvachar(50)   |  no         | no   |  no        |
+| Zipcode       | int           |  yes        | no   |  no        |
+| State         | nvachar(2)    |  no         | no   |  no        |
+| Country       | nvachar(2)    |  yes        | no   |  no        |
 
 ## OpenWeatherMap
 
@@ -16,11 +48,14 @@ Requests to the OpenWeatherMap are handled within the OpenWeatherMapAPI project.
 These are not accessed directly by the client.
 
 To obtain the data for the selected location, the following public API requests are made:
+
 + [Current](https://openweathermap.org/current)
-...This request will get the current weather for the desired location
+
+.This request will get the current weather for the desired location
 
 + [5 Day/3 Hour](https://openweathermap.org/forecast5)
-...This request will retrieve the 3 hour data for the desired location
+
+.This request will retrieve the 3 hour data for the desired location
 
 ### Adding Your API Key
 
@@ -41,17 +76,3 @@ Add your API key:
 `<appSettings>
 <add key="key" value="YOUR_API_KEY_HERE" />
 </appSettings>`
-
-## ASP.NET API
-
-+ Get All Locations (`GET` `/api/locations`)
-...Returns all known locations
-
-+ Get Single Location (`GET` `/api/locations/{id}`)
-...Returns a single location, specified by ID number
-
-+ Delete Location (`DELETE` `/api/locations/{id}`)
-...Delete the specified location
-
-+ Create Location (`POST` `/api/locations` `mime-type: x-www-form-urlencoded`)
-...Add a location to the database

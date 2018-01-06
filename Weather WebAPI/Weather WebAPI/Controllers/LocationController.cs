@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Local_Database;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Weather_Models;
+using Weather_WebAPI.Models;
 
 namespace Weather_WebAPI.Controllers
 {
     public class LocationController : ApiController
     {
-        static List<Location> locations = new List<Location>()
-        {
-            new Location { Id = 5308655, Country = "US", Name = "Phoenix", State = "AZ", Zipcode = "85044" },
-            new Location { Id = 5419384, Country = "US", Name = "Denver", State = "CO", Zipcode = "80014" }
-        };
+        // instantiate the connection
+        static Connection conn = new Connection();
 
         /// <summary>
         /// GET /api/locations
@@ -21,7 +20,7 @@ namespace Weather_WebAPI.Controllers
         public IEnumerable<Location> GetAllLocations()
         {
             // return all
-            return locations;
+            return conn.GetAllLocations();
         }
 
         /// <summary>
@@ -31,8 +30,8 @@ namespace Weather_WebAPI.Controllers
         /// <returns>JSON of the requested location</returns>
         public IHttpActionResult GetLocation(int id)
         {
-            // use LINQ to find the right location
-            Location location = locations.FirstOrDefault((x) => x.Id == id);
+            // query the db to get the right location
+            Location location = conn.GetLocation(id);
             
             // make sure that we have this location
             if (location == null)
@@ -50,18 +49,11 @@ namespace Weather_WebAPI.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteLocation(int id)
         {
-            // use LINQ to find the right location
-            Location location = locations.FirstOrDefault((x) => x.Id == id);
+            // query the db to remove the location
+            API_Response_Object response = new API_Response_Object(!conn.RemoveLocation(id));
 
-            // make sure that we have this location
-            if (location == null)
-                return NotFound();
-
-            // remove the location from the list
-            locations = locations.Where(x => x.Id != id).ToList();
-
-            // return success
-            return Ok(location);
+            // return the result
+            return Ok(response);
         }
 
         /// <summary>
@@ -71,21 +63,11 @@ namespace Weather_WebAPI.Controllers
         /// <returns>JSON of the added location</returns>
         public IHttpActionResult PostLocation(Location location)
         {
-            // check to see if this is valid
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid location");
+            // query the db to add the new location
+            API_Response_Object response = new API_Response_Object(conn.AddLocation(location));
 
-            // make sure we don't already have this location
-            // if we do, we can say success because it's already there
-            if (locations.Any(x => x.Id == location.Id))
-                return Ok(location);
-
-            // we did not have this location already
-            // add it now
-            locations.Add(location);
-
-            // return success
-            return Ok(location);
+            // return the result
+            return Ok(response);
         }
 
         /// <summary>
@@ -96,8 +78,8 @@ namespace Weather_WebAPI.Controllers
         [Route("api/locations/{id}/weather")]
         public async Task<IHttpActionResult> GetWeather(int id)
         {
-            // use LINQ to find the right location
-            Location location = locations.FirstOrDefault((x) => x.Id == id);
+            // query the database to make sure we have the location
+            Location location = conn.GetLocation(id);
 
             // make sure that we have this location
             if (location == null)
