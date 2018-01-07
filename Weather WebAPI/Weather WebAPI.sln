@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Local Database", "Local Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Local Database.Tests", "Local Database.Tests\Local Database.Tests.csproj", "{4DEA4525-AEAA-4CEA-9756-F6D59DE39C6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Local Redis", "Local Redis\Local Redis.csproj", "{9C8D9C1F-9727-400D-97B8-8B10EB05A9DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Local Redis.Test", "Local Redis.Test\Local Redis.Test.csproj", "{325C0B82-AD0B-4990-9ED6-FB267334B20F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{4DEA4525-AEAA-4CEA-9756-F6D59DE39C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DEA4525-AEAA-4CEA-9756-F6D59DE39C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DEA4525-AEAA-4CEA-9756-F6D59DE39C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C8D9C1F-9727-400D-97B8-8B10EB05A9DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C8D9C1F-9727-400D-97B8-8B10EB05A9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C8D9C1F-9727-400D-97B8-8B10EB05A9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C8D9C1F-9727-400D-97B8-8B10EB05A9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325C0B82-AD0B-4990-9ED6-FB267334B20F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325C0B82-AD0B-4990-9ED6-FB267334B20F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325C0B82-AD0B-4990-9ED6-FB267334B20F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325C0B82-AD0B-4990-9ED6-FB267334B20F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

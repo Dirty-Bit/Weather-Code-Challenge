@@ -69,8 +69,6 @@ namespace OpenWeatherMapAPI.Core
         /// <returns>JSON response from the API server</returns>
         public async Task<string> MakeRequest(string method, string path)
         {
-
-
             // make the GET request and receive the response
             HttpResponseMessage response = client.GetAsync(AddAPIkey(path)).Result;
 

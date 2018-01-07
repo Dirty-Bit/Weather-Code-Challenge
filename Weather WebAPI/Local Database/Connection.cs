@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Local_Redis;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,20 +25,22 @@ namespace Local_Database
         /// create the database, this will ensure that we don't have
         /// any issues with the |DataDirectory|
         /// between our test projects and ASP.NET project
+        /// <param name="redis">the redis connection</param>
         /// </summary>
-        public Connection()
+        public Connection(Redis_Connection redis)
         {
             // get a temp folder
             SQLPath = Path.GetTempPath();
 
             // create the database
-            CreateDatabase();
+            CreateDatabase(redis);
         }
 
         /// <summary>
         /// method to create the database "Locations"
         /// </summary>
-        private void CreateDatabase()
+        /// <param name="redis">The redis connection</param>
+        private void CreateDatabase(Redis_Connection redis)
         {
             // create a database name, strips the extension
             string DBName = "LocationDB";
@@ -101,8 +105,8 @@ namespace Local_Database
                     }
                     
                     // add some initial values for Phoenix and Denver
-                    AddLocation(new Location("5308655", "Phoenix", "85044", "AZ", "US"));
-                    AddLocation(new Location("5419384", "Denver", "80014", "CO", "US"));
+                    AddLocation(new Location("5308655", "Phoenix", "85044", "AZ", "US"), redis);
+                    AddLocation(new Location("5419384", "Denver", "80014", "CO", "US"), redis);
                 }
             }            
         }
@@ -217,9 +221,21 @@ namespace Local_Database
         /// Retrieve a single location from the database
         /// </summary>
         /// <param name="Id">the Id of the location to get</param>
+        /// <param name="redis">the redis cache connection</param>
         /// <returns>a location object, null if not found</returns>
-        public Location GetLocation(int Id)
+        public Location GetLocation(int Id, Redis_Connection redis)
         {
+            // check to see if we have this location in our redis cache
+            string json = redis.get(string.Format("loc_{0}", Id));
+
+            // check to see if we have a result
+            if (json != null)
+            {
+                // we got a result, this location has been cached
+                // parse and return
+                return JsonConvert.DeserializeObject<Location>(json);
+            }
+
             // make sure that we are connected
             EnsureConnection();
 
@@ -248,6 +264,10 @@ namespace Local_Database
                         if (location.Id == -1)
                             continue;
 
+                        // save this in redis
+                        // we can keep it for a while since we don't expect the values to change
+                        redis.set(string.Format("loc_{0}", Id), JsonConvert.SerializeObject(location), 60);
+
                         // valid, return it
                         return location;
                     }
@@ -262,11 +282,17 @@ namespace Local_Database
         /// Add a location to the database
         /// </summary>
         /// <param name="location">Object defining the location to add to the database</param>
+        /// <param name="redis">the redis cache connection</param>
         /// <returns>true/false: whether or not the INSERT was successful</returns>
-        public bool AddLocation(Location location)
+        public bool AddLocation(Location location, Redis_Connection redis)
         {
             // validate that we have a location that is acceptable for the database
             if (!location.CanAddToDB())
+                return false;
+
+            // we shouldn't already have this in cache
+            // if we do, then we don't need to add anything
+            if (redis.exists(string.Format("loc_{0}", location.Id)))
                 return false;
 
             // make sure we are connected
@@ -282,8 +308,11 @@ namespace Local_Database
                 command.Parameters.AddWithValue("@p3", location.State);
                 command.Parameters.AddWithValue("@p4", location.Country);
 
+                // either add this to redis or reset the time to live
+                redis.set(string.Format("loc_{0}", location.Id), JsonConvert.SerializeObject(location), 60);
+
                 // return true if the number of rows affected is 1
-                return command.ExecuteNonQuery() == 1;
+                return command.ExecuteNonQuery() == 1; ;
             }
         }
 
@@ -292,7 +321,7 @@ namespace Local_Database
         /// </summary>
         /// <param name="Id">The Id of the location to remove</param>
         /// <returns>true/false: whether or not the DELETE was successful</returns>
-        public bool RemoveLocation(int Id)
+        public bool RemoveLocation(int Id, Redis_Connection redis)
         {
             // make sure we are connected
             EnsureConnection();
@@ -303,9 +332,16 @@ namespace Local_Database
                 // add the parameters
                 command.Parameters.AddWithValue("@p0", Id);
 
-                // execute the non-query and return true
+                // execute the non-query and set true
                 // if the number of rows affected is 1
-                return command.ExecuteNonQuery() == 1;
+                bool had_affect = command.ExecuteNonQuery() == 1;
+
+                // if we had an affect, let's also remove from redis
+                if (had_affect)
+                    redis.delete(string.Format("loc_{0}", Id));
+
+                // return whether or not we changed something
+                return had_affect;
             }
         }
     }

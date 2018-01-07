@@ -59,6 +59,10 @@
       <Project>{68b65f0b-4a3e-4943-96a0-4af2e345107f}</Project>
       <Name>Local Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Local Redis\Local Redis.csproj">
+      <Project>{9c8d9c1f-9727-400d-97b8-8b10eb05a9db}</Project>
+      <Name>Local Redis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Weather Models\Weather Models.csproj">
       <Project>{9D2F80F4-6946-403E-8EBD-A403F10768DD}</Project>
       <Name>Weather Models</Name>

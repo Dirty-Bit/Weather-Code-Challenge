@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Local_Redis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Weather_Models;
@@ -8,6 +9,14 @@ namespace OpenWeatherMapAPI.Tests
     [TestClass]
     public class Weather_Tests
     {
+        private static Redis_Connection redis;
+
+        [TestInitialize]
+        public void SetUp()
+        {
+            redis = new Redis_Connection();
+        }
+
         [TestMethod]
         public void StaticJSONWeather()
         {
@@ -39,7 +48,7 @@ namespace OpenWeatherMapAPI.Tests
         {
             // make a request to get the current weather in Phoenix
             //  id=5308655
-            string json = await Requests.Weather.Current(5308655);
+            string json = await Requests.Weather.Current(5308655, redis);
 
             // we should be able to parse this into a current weather object
             Current_Weather weather = JsonConvert.DeserializeObject<Current_Weather>(json);
@@ -53,13 +62,19 @@ namespace OpenWeatherMapAPI.Tests
         {
             // make a request to get the forecasted weather in Phoenix
             //  id=5308655
-            string json = await Requests.Weather.Forecast(5308655);
+            string json = await Requests.Weather.Forecast(5308655, redis);
 
             // we should be able to parse this into a forecast object
             Forecast forecast = JsonConvert.DeserializeObject<Forecast>(json);
 
             // the object should have a city name of Phoenix
             Assert.IsTrue(forecast != null && forecast.city != null && forecast.city.name == "Phoenix");
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            redis.Dispose();
         }
     }
 }

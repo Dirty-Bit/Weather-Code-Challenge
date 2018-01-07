@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAD4DA42-7D06-4ED7-8A5B-F2BD3930F5D7}</ProjectGuid>
+    <ProjectGuid>{325C0B82-AD0B-4990-9ED6-FB267334B20F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenWeatherMapAPI.Tests</RootNamespace>
-    <AssemblyName>OpenWeatherMapAPI.Tests</AssemblyName>
+    <RootNamespace>Local_Redis.Test</RootNamespace>
+    <AssemblyName>Local Redis.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -44,32 +44,20 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Weather Tests.cs" />
+    <Compile Include="Redis Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Local Redis\Local Redis.csproj">
       <Project>{9c8d9c1f-9727-400d-97b8-8b10eb05a9db}</Project>
       <Name>Local Redis</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenWeatherMapAPI\OpenWeatherMapAPI.csproj">
-      <Project>{e782574d-85fe-499c-ab75-18dd00b4386c}</Project>
-      <Name>OpenWeatherMapAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Weather Models\Weather Models.csproj">
-      <Project>{9d2f80f4-6946-403e-8ebd-a403f10768dd}</Project>
-      <Name>Weather Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

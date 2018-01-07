@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Local Redis\Local Redis.csproj" />
     <ProjectReference Include="..\Weather Models\Weather Models.csproj" />
   </ItemGroup>
 

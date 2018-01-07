@@ -1,7 +1,11 @@
 ﻿using Local_Database;
+using Local_Redis;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using Weather_Models;
 using Weather_WebAPI.Models;
@@ -10,8 +14,34 @@ namespace Weather_WebAPI.Controllers
 {
     public class LocationController : ApiController
     {
+        // instantiate redis
+        static Redis_Connection redis = new Redis_Connection();
+
         // instantiate the connection
-        static Connection conn = new Connection();
+        static Connection conn = new Connection(redis);
+
+        /// <summary>
+        /// default route that will show on start-up
+        /// </summary>
+        /// <returns></returns>
+        [Route("")]
+        public IHttpActionResult Get()
+        {
+            // get the readme text, no need to fail here
+            string readme = "";
+            try
+            {
+                // the readme.md is handled as a linked asset and should be 
+                // copied into the /bin folder when it is newer
+                using (StreamReader r = new StreamReader(string.Format("{0}\\README.md", HttpRuntime.BinDirectory)))
+                    readme = r.ReadToEnd();
+            }
+            catch (Exception e)
+            { }
+
+            // return with something when the start-up occurs
+            return Ok(string.Format("<!DOCTYPE HTML><html><head><title>Hello world!</title></head><body>Hello world!<br /><br />{0}</body></html>", readme));
+        }
 
         /// <summary>
         /// GET /api/locations
@@ -31,7 +61,7 @@ namespace Weather_WebAPI.Controllers
         public IHttpActionResult GetLocation(int id)
         {
             // query the db to get the right location
-            Location location = conn.GetLocation(id);
+            Location location = conn.GetLocation(id, redis);
             
             // make sure that we have this location
             if (location == null)
@@ -50,7 +80,7 @@ namespace Weather_WebAPI.Controllers
         public IHttpActionResult DeleteLocation(int id)
         {
             // query the db to remove the location
-            API_Response_Object response = new API_Response_Object(!conn.RemoveLocation(id));
+            API_Response_Object response = new API_Response_Object(conn.RemoveLocation(id, redis));
 
             // return the result
             return Ok(response);
@@ -64,7 +94,7 @@ namespace Weather_WebAPI.Controllers
         public IHttpActionResult PostLocation(Location location)
         {
             // query the db to add the new location
-            API_Response_Object response = new API_Response_Object(conn.AddLocation(location));
+            API_Response_Object response = new API_Response_Object(conn.AddLocation(location, redis));
 
             // return the result
             return Ok(response);
@@ -79,14 +109,14 @@ namespace Weather_WebAPI.Controllers
         public async Task<IHttpActionResult> GetWeather(int id)
         {
             // query the database to make sure we have the location
-            Location location = conn.GetLocation(id);
+            Location location = conn.GetLocation(id, redis);
 
             // make sure that we have this location
             if (location == null)
                 return NotFound();
 
             // we have a location, we can retrieve its weather
-            Current_and_Forecasted_Weather weather = await OpenWeatherMapAPI.Requests.Weather.CurrentAndForecast(id);
+            Current_and_Forecasted_Weather weather = await OpenWeatherMapAPI.Requests.Weather.CurrentAndForecast(id, redis);
 
             // return ok
             return Ok(weather);

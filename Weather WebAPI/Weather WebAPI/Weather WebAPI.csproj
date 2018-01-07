@@ -94,6 +94,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\README.md">
+      <Link>README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -109,6 +113,10 @@
     <ProjectReference Include="..\Local Database\Local Database.csproj">
       <Project>{68b65f0b-4a3e-4943-96a0-4af2e345107f}</Project>
       <Name>Local Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Local Redis\Local Redis.csproj">
+      <Project>{9c8d9c1f-9727-400d-97b8-8b10eb05a9db}</Project>
+      <Name>Local Redis</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpenWeatherMapAPI\OpenWeatherMapAPI.csproj">
       <Project>{e782574d-85fe-499c-ab75-18dd00b4386c}</Project>
