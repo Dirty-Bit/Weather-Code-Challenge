@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -25,7 +27,7 @@ namespace Weather_WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("")]
-        public IHttpActionResult Get()
+        public HttpResponseMessage Get()
         {
             // get the readme text, no need to fail here
             string readme = "";
@@ -40,7 +42,13 @@ namespace Weather_WebAPI.Controllers
             { }
 
             // return with something when the start-up occurs
-            return Ok(string.Format("<!DOCTYPE HTML><html><head><title>Hello world!</title></head><body>Hello world!<br /><br />{0}</body></html>", readme));
+            // added a dependency CommonMark.NET
+            // to display this data
+            // CommonMark.NET will take the .md file and convert to html
+            HttpResponseMessage response = new HttpResponseMessage();
+            response.Content = new StringContent(string.Format("<!DOCTYPE HTML><html><head><title>Weather API Challenge</title></head><body>Hello world!<br /><br />This code challenge can be found on <a href=\"https://github.com/Dirty-Bit/Weather-Code-Challenge\" target=\"blank\">GitHub here</a>.<br />A decently interpreted version of the markdown file is below (it's not a front-end test).<br /><br />{0}</body></html>", CommonMark.CommonMarkConverter.Convert(readme)));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            return response;
         }
 
         /// <summary>

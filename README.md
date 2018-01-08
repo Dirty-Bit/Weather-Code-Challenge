@@ -1,8 +1,8 @@
 # Weather-Code-Challenge
 ---
-This project will use ASP.NET 2.0 to provide current weather data and 3 hour weather data for a desired location
+This project will use ASP.NET 2.0 to provide current weather data and 3 hour weather data for a desired location.
 
-## ASP.NET API
+## ASP.NET Web API
 
 + Get All Locations (`GET` `/api/locations`)
 
@@ -20,6 +20,136 @@ This project will use ASP.NET 2.0 to provide current weather data and 3 hour wea
 
   Add a location to the database
 
+## Response Objects
+
+### Location
+
+A single location within the database.
+
+`{ 
+	"Id": 5308655,
+	"Name": "Phoenix",
+	"Zipcode": 85044,
+	"State": "AZ",
+	"Country": "US"
+}`
+
+### Weather
+
+The current weather and a 3 hour forecast of the weather.
+
+`{
+   "current":{
+      "coord":{
+         "lon":-112.07,
+         "lat":33.45
+      },
+      "weather":[
+         {
+            "id":803,
+            "main":"Clouds",
+            "description":"broken clouds",
+            "icon":"04d"
+         }
+      ],
+      "base":"stations",
+      "main":{
+         "temp":285.48,
+         "pressure":1018.0,
+         "humidity":41.0,
+         "temp_min":283.15,
+         "temp_max":287.15,
+         "sea_level":0.0,
+         "grnd_level":0.0,
+         "temp_kf":0.0
+      },
+      "visibility":16093,
+      "wind":{
+         "speed":2.1,
+         "deg":170.0
+      },
+      "clouds":{
+         "all":75
+      },
+      "dt":1515424500,
+      "sys":{
+         "type":1,
+         "id":291,
+         "message":0.0044,
+         "country":"US",
+         "sunrise":1515421983,
+         "sunset":1515458272,
+         "pod":null
+      },
+      "id":5308655,
+      "name":"Phoenix",
+      "cod":200
+   },
+   "forecast":{
+      "cod":"200",
+      "message":0.004,
+      "cnt":40,
+      "list":[
+         {
+            "dt":1515434400,
+            "main":{
+               "temp":291.26,
+               "pressure":977.67,
+               "humidity":41.0,
+               "temp_min":288.272,
+               "temp_max":291.26,
+               "sea_level":1031.03,
+               "grnd_level":977.67,
+               "temp_kf":2.99
+            },
+            "weather":[
+               {
+                  "id":804,
+                  "main":"Clouds",
+                  "description":"overcast clouds",
+                  "icon":"04d"
+               }
+            ],
+            "clouds":{
+               "all":92
+            },
+            "wind":{
+               "speed":2.36,
+               "deg":40.5004
+            },
+            "sys":{
+               "type":0,
+               "id":0,
+               "message":0.0,
+               "country":null,
+               "sunrise":0,
+               "sunset":0,
+               "pod":"d"
+            },
+            "dt_txt":"2018-01-08 18:00:00"
+         }
+      ],
+      "city":{
+         "id":5308655,
+         "name":"Phoenix",
+         "coord":{
+            "lon":-112.0741,
+            "lat":33.4484
+         },
+         "country":"US"
+      }
+   }
+}`
+
+### Action Response 
+
+An object that gives the client a response as to whether or not their action was successful. This is used in DELETE and POST
+
+`{
+    "success": true
+}`
+
+  
 ## Database
 
 The location data is stored within a Local SQL Database (.mdf). The database is created automatically in the Temp directory. It is automatically populated with two entries.
@@ -88,7 +218,7 @@ Add your API key to the Web.config file within the Weather WebAPI ASP.NET projec
 
 The same is true for the App.config within the OpenWeatherMapAPI.Tests project.
 
-Remove tracking chainges: `git update-index --skip-worktree "Weather WebAPI\OpenWeatherMapAPI.Tests\Web.config"`
+Remove tracking changes: `git update-index --skip-worktree "Weather WebAPI\OpenWeatherMapAPI.Tests\Web.config"`
 
 Add your API key:
 
