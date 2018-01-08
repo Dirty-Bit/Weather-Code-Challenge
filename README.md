@@ -177,11 +177,11 @@ Redis will be used where possible to eliminate calls to the SQL Server.
 
 Keys have a prefix and then will be followed by the Location ID, as defined by OpenWeatherMap API.
 
-| Prefix	    | TTL (min)     | Model              | 
-| ------------- | ------------- | ------------------ | 
-| loc_          | 60            |  Location          | 
-| current_      | 5             |  Current_Weather   | 
-| forecast_     | 5             |  Forecast          | 
+| Prefix	    | TTL (min)     | Model                       | 
+| ------------- | ------------- | --------------------------- | 
+| loc_          | 60            |  Location                   | 
+| current_      | 5             |  Current_Weather            | 
+| forecast_     | 5             |  Forecast                   | 
 
 
 ## OpenWeatherMap
